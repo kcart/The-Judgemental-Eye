@@ -2,7 +2,7 @@
 
 from model import User, Rating, Movie, connect_to_db, db
 from server import app
-import datetime
+from datetime import datetime
 
 
 def load_users():
@@ -28,11 +28,7 @@ def load_users():
         db.session.add(user)
     
     db.session.commit()
-
-    def __repr__(self):
-        """Provide helpful representation when printed."""
-
-        return "<User user_id=%s email=%s>" % (self.user_id, self.email)
+    
 
 def load_movies():
     """Load movies from u.item into database."""
@@ -46,16 +42,25 @@ def load_movies():
 
         movie_id = movie_info[0]
         movie_title = movie_info[1]
+        
+        for movie in movie_title:
+            movie = movie_title.split()
+            del movie[-1]
+            movie_no_year = " ".join(movie)
+        print movie_no_year
+        
         released_at = movie_info[2]
         imdb_url = movie_info[3]
-
-        print movie_id , movie_title, released_at
+        
         if released_at:
-            released_at = datetime.datetime.strptime(released_at, '%d-%b-%Y')
+           released_at = datetime.strptime(released_at, '%d-%b-%Y')
 
-        movie = Movie(movie_id=movie_id, title=movie_title, released_at=released_at, imdb_url=imdb_url)
-        #print released_at
-        db.session.add(movie)
+        else:
+            released_at = None
+
+        movie_data = Movie(movie_id=movie_id, title=movie_no_year, released_at=released_at, imdb_url=imdb_url)
+        #print movie_data
+        db.session.add(movie_data)
 
     db.session.commit()
 
@@ -83,6 +88,6 @@ def load_ratings():
 if __name__ == "__main__":
     connect_to_db(app)
 
-    #load_users()
+    load_users()
     load_movies()
     load_ratings()
