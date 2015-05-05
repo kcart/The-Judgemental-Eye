@@ -2,7 +2,7 @@
 
 from model import User, Rating, Movie, connect_to_db, db
 from server import app
-from datetime import datetime
+import datetime
 
 
 def load_users():
@@ -50,8 +50,8 @@ def load_movies():
         imdb_url = movie_info[3]
 
         print movie_id , movie_title, released_at
-
-        released_at = datetime.strptime(released_at, '%d-%b-%Y')
+        if released_at:
+            released_at = datetime.datetime.strptime(released_at, '%d-%b-%Y')
 
         movie = Movie(movie_id=movie_id, title=movie_title, released_at=released_at, imdb_url=imdb_url)
         #print released_at
@@ -70,11 +70,11 @@ def load_ratings():
             user_id = data_info[0]    
             movie_id = data_info[1]    
             score = data_info[2]
-            timestamp = data_info[3]
+            #timestamp = data_info[3]
 
-            timestamp = timestamp.datetime.strptime(t_timestamp, ) #add something behind the trailing comma
+            #timestamp = timestamp.datetime.strptime(t_timestamp, ) #add something behind the trailing comma
                     
-            rating = Rating(user_id=user_id, movie_id=t_movie_id, score=t_score, timestamp=t_timestamp)
+            rating = Rating(user_id=user_id, movie_id=movie_id, score=score)
             db.session.add(rating)
     
     db.session.commit()
@@ -85,4 +85,4 @@ if __name__ == "__main__":
 
     #load_users()
     load_movies()
-    #load_ratings()
+    load_ratings()
