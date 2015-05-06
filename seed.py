@@ -11,18 +11,19 @@ def load_users():
     users_file = open("seed_data/u.user")
 
     for row in users_file:
-        # user_id, email, password, age, zipcode = row.split("|")
-        users_info = row.strip().split("|")
+        user_id, email, password, age, zipcode = row.split("|")
+        #users_info = row.strip().split("|")
         
-        user_id = users_info[0]    
-        email = users_info[1]    
-        password = users_info[2]
-        age = users_info[3]
-        zipcode = users_info[4]    
         
-        # user_id, email, password, age, zipcode = user_info
 
-        #print user_id, email, password  
+        # user_id = users_info[0]    
+        # email = users_info[1]    
+        # password = users_info[2]
+        # age = users_info[2]
+        # zipcode = users_info[4]    
+        
+        #user_info = user_id, email, password, age, zipcode
+        
         user = User(user_id=user_id, email=email, password=password, age=age, zipcode=zipcode)
         #QUERY = "INSERT INTO users VALUES(user_id, email, password, age, zipcode)"
         db.session.add(user)
@@ -89,5 +90,5 @@ if __name__ == "__main__":
     connect_to_db(app)
 
     load_users()
-    load_movies()
-    load_ratings()
+    #load_movies()
+    #load_ratings()

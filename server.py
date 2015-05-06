@@ -2,10 +2,11 @@
 
 from jinja2 import StrictUndefined
 
-from flask import Flask
+from flask import Flask, render_template, redirect, request, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
 
-from model import connect_to_db, db
+from model import User, Rating, Movie, connect_to_db, db
+
 
 
 app = Flask(__name__)
@@ -22,7 +23,55 @@ app.jinja_env.undefined = StrictUndefined
 def index():
     """Homepage."""
 
-    return "<html><body>Placeholder for the homepage.</body></html>"
+    return render_template("homepage.html")
+
+@app.route('/loginpage')
+def loginpage():
+    """Login/Signup page"""
+
+    #add username and password to database
+    username = request.form.get("username")
+    password = request.form.get("password")
+
+    # get the user with this email
+    # check if this is the right password
+    # no? flash failure message, redirect to login form
+    # yes?  put something in session:    session['logged_in_user']=userid 
+
+    #  check username and password in db
+    # if username and password in db(and statment):
+        # yes?  put something in session:    session['logged_in_user']=userid
+    if session.query(Users).filter_by(username=userid, password=password):
+        flash("You've successfully registered.")
+        session['logged_in_user']=userid
+    else:
+        flash("You haven't registered")
+
+
+    if 'username' in session:
+        return 'Logged in as %s' % escape(session['username'])
+    return 'You are not logged in'
+  
+
+
+@app.route('/loginpage', methods=["POST"])
+def login_submission():
+    """handles login submission"""
+    #if credentials already exist in database, flash logged in message.
+    #if credentials don't match the database, return failed message
+    #not allow duplicate emails 
+
+
+
+    return render_template("homepage.html")
+
+
+@app.route("/users")
+def user_list():
+    """Show list of users."""
+
+    users = User.query.all()
+    return render_template("user_list.html", users=users)
 
 
 if __name__ == "__main__":
