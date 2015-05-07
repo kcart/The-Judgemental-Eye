@@ -95,6 +95,19 @@ def user_list():
     users = User.query.all()
     return render_template("user_list.html", users=users)
 
+@app.route("/users/<int:id>")
+def user_detaiL(id):
+    """ Shows the age, zipcode, movies that the user rated, and the scores they rated the movies"""
+
+    print "*" * 20
+    
+    print "*" * 20
+
+    user = User.query.get(id)
+    print user 
+   
+    return render_template("user_details.html", user=user)
+
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point

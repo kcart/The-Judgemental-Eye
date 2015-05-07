@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <h2>Users</h2>
+    <ul>
+              <li>
+              <a href="/users/{{ user.user_id }}"></a>
+                {{ user.age }} ({{ user.zipcode}}) 
+
+              <ul>
+                 {% for rated_item in user.ratings %}
+
+                   <li> {{ rated_item.movie.title }} - {{rated_item.score}} </li>
+                  {% endfor %}
+              </ul>
+              
+          </li>
+    </ul>
+
+{% endblock %}
