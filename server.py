@@ -45,7 +45,7 @@ def login_submission():
                 flash("Wrong Login.")
                 return redirect("/loginpage")
         else:
-            flash("Not on file")
+            flash("Your username is not on file")
             return redirect("/loginpage")
             
 
