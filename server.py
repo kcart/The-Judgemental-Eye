@@ -25,46 +25,58 @@ def index():
 
     return render_template("homepage.html")
 
+@app.route('/loginpage', methods=["POST", "GET"])
+def login_submission():
+    """handles login submission"""
+    if request.method == "POST":
+        username = request.form["username_input"]
+        password = request.form["password_input"]
+        user_object = User.query.filter(User.email == username).first()
+        #if credentials already exist in database, flash logged in message.
+        #if credentials don't match the database, return failed message
+        #not allow duplicate emails 
+        print user_object
+        if user_object:
+            if user_object.password == password:
+                session["login"] = username
+                flash("You've successfully registered.")
+                return redirect("/")
+            else:
+                flash("Wrong Login.")
+                return redirect("/loginpage")
+        else:
+            flash("Not on file")
+            return redirect("/loginpage")
+            
+
+    return render_template("/loginpage.html")
+# return render_template("/loginpage.html")
 @app.route('/loginpage')
 def loginpage():
     """Login/Signup page"""
 
     #add username and password to database
-    username = request.form.get("username")
-    password = request.form.get("password")
+
 
     # get the user with this email
     # check if this is the right password
     # no? flash failure message, redirect to login form
     # yes?  put something in session:    session['logged_in_user']=userid 
 
-    #  check username and password in db
+     # check username and password in db
     # if username and password in db(and statment):
-        # yes?  put something in session:    session['logged_in_user']=userid
-    if session.query(Users).filter_by(username=userid, password=password):
-        flash("You've successfully registered.")
-        session['logged_in_user']=userid
-    else:
-        flash("You haven't registered")
+    #     yes?  put something in session:    session['logged_in_user']=userid
+    # if db.session.query(User).filter_by(user_id= username_input, password=password_input):
+    #     flash("You've successfully registered.")
+    #     session['logged_in_user']=username_input
+    # else:
+    #     flash("You haven't registered.")
+    #     return redirect("/")
 
-
-    if 'username' in session:
-        return 'Logged in as %s' % escape(session['username'])
-    return 'You are not logged in'
+    # if 'username' in session:
+    #     return 'Logged in as %s' % escape(session['username'])
+    return render_template("loginpage.html")
   
-
-
-@app.route('/loginpage', methods=["POST"])
-def login_submission():
-    """handles login submission"""
-    #if credentials already exist in database, flash logged in message.
-    #if credentials don't match the database, return failed message
-    #not allow duplicate emails 
-
-
-
-    return render_template("homepage.html")
-
 
 @app.route("/users")
 def user_list():
