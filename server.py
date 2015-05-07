@@ -35,11 +35,12 @@ def login_submission():
         #if credentials already exist in database, flash logged in message.
         #if credentials don't match the database, return failed message
         #not allow duplicate emails 
+        # we should probably look at validating and user with the email?
         print user_object
         if user_object:
             if user_object.password == password:
                 session["login"] = username
-                flash("You've successfully registered.")
+                flash("You've successfully logged in.")
                 return redirect("/")
             else:
                 flash("Wrong Login.")
@@ -76,7 +77,16 @@ def loginpage():
     # if 'username' in session:
     #     return 'Logged in as %s' % escape(session['username'])
     return render_template("loginpage.html")
-  
+
+@app.route('/loginout', methods=["POST", "GET"])
+def loginout():
+    """Loginout page"""
+
+    flash("You have been successfully logged out.")
+
+    session.pop('login')
+
+    return render_template("/homepage.html")
 
 @app.route("/users")
 def user_list():
