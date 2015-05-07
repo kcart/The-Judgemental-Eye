@@ -62,7 +62,10 @@ def load_movies():
         else:
             released_at = None
 
-        movie_data = Movie(movie_id=movie_id, title=movie_no_year, released_at=released_at, imdb_url=imdb_url)
+        movie_data = Movie(movie_id=movie_id,
+                            title=movie_no_year, 
+                            released_at=released_at, 
+                            imdb_url=imdb_url)
         #print movie_data
         db.session.add(movie_data)
 
