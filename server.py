@@ -108,6 +108,18 @@ def user_detaiL(id):
    
     return render_template("user_details.html", user=user)
 
+@app.route("/movies")
+def movie_list():
+    """ Making a page that shows all the information about a specific movie, including all ratings that the movie has received"""
+
+    movies = Movie.query.all()
+
+    print "*" * 20
+    print movies
+    print "*" * 20
+    
+
+    return render_template("movie_list.html", movies=movies)
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point

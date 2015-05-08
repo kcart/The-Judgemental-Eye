@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+   
+    <li>
+         <a href="Click">Click</a>
+          
+            <ul>
+                {% for movie in movies %}
+
+                <li> {{movie.title}} </li>
+
+                
+                {% endfor %}
+
+            </ul>
+              
+    </li>
+ 
+{% endblock %}
