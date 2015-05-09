@@ -121,6 +121,37 @@ def movie_list():
 
     return render_template("movie_list.html", movies=movies)
 
+@app.route("/movies_ratings")
+def movie_rating():
+    """Add new ratings and edit ratings for movies. """
+    
+    score = int(request.form["score"])
+
+    user_id = session.get("user_id")
+
+    if not user_id:
+        raise Exception("You're not logged in.")
+        
+    rating = Rating.query.filter_by(user_id=user_id, movie_id=movie_id).first() 
+
+    #for existing ratings
+    if rating:
+        ratings.score = score 
+        flash("You've successfully updated your rating.")
+
+
+    else: #new ratings
+        (ratings.score, movie.id)
+        
+        rating = Rating(user_id=user_id, movie_id=movie_id, score=score)
+        flash("You've successfully created a new rating.") 
+        db.session.add(rating)
+
+    db.session.commit()
+
+    return redirect("/movies/%s" %s movie_id)
+
+
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point
     # that we invoke the DebugToolbarExtension
