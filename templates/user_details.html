@@ -1,20 +1,22 @@
 {% extends 'base.html' %}
 {% block content %}
 
-    <h2>Users</h2>
+  <h1>{{ user.email }} ({{ user.user_id }})</h1>
+
+  <p>Age: {{ user.age }}</p>
+  <p>Zipcode: {{ user.zipcode }}</p>
+
+  {% if user.ratings %}
+
+    <h2>Ratings</h2>
     <ul>
-              <li>
-              <a href="/users/{{ user.user_id }}"></a>
-                {{ user.age }} ({{ user.zipcode}}) 
-
-              <ul>
-                 {% for rated_item in user.ratings %}
-
-                   <li> {{ rated_item.movie.title }} - {{rated_item.score}} </li>
-                  {% endfor %}
-              </ul>
-              
-          </li>
+    {% for rating in user.ratings %}
+      <li>
+        <a href="/movies/{{ rating.movie_id }}">{{ rating.movie.title }}</a>
+        was rated {{ rating.score }}
+      </li>
+    {% endfor %}
     </ul>
+  {% endif %}
 
 {% endblock %}

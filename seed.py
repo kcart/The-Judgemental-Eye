@@ -1,62 +1,68 @@
 """Utility file to seed ratings database from MovieLens data in seed_data/"""
 
+import datetime
+
 from model import User, Rating, Movie, connect_to_db, db
 from server import app
-from datetime import datetime
 
 
 def load_users():
     """Load users from u.user into database."""
 
-    users_file = open("seed_data/u.user")
+    print "Users"
 
-    for row in users_file:
-        user_id, age, gender, job, zipcode = row.split("|")
+    for i, row in enumerate(open("seed_data/u.user")):
+        row = row.rstrip()
+        user_id, age, gender, occupation, zipcode = row.split("|")
+
         user = User(user_id=user_id,
                     age=age,
                     zipcode=zipcode)
 
+
         db.session.add(user)
+
     db.session.commit()
+
 
 def load_movies():
     """Load movies from u.item into database."""
 
-    item_file= open("seed_data/u.item")
+    print "Movies"
 
-    for row in item_file:
-        movie_info = row.strip().split("|")
+    for i, row in enumerate(open("seed_data/u.item")):
+        row = row.rstrip()
 
-        movie_id = movie_info[0]
-        movie_title = movie_info[1]
 
-        for movie in movie_title:
-            movie = movie_title.split()
-            del movie[-1]
-            movie_no_year = " ".join(movie)
-        print movie_no_year
-  
-        released_at = movie_info[2]
-        imdb_url = movie_info[3]
-        
-        if released_at:
-           released_at = datetime.strptime(released_at, '%d-%b-%Y')
+        movie_id, title, released_str, junk, imdb_url = row.split("|")[:5]
 
+        if released_str:
+            released_at = datetime.datetime.strptime(released_str, "%d-%b-%Y")
         else:
             released_at = None
 
-        movie_data = Movie(movie_id=movie_id,
-                            title=movie_no_year, 
-                            released_at=released_at, 
-                            imdb_url=imdb_url)
-    
-        db.session.add(movie_data)
+
+
+        title = title[:-7] 
+
+        movie = Movie(movie_id=movie_id,
+                      title=title,
+                      released_at=released_at,
+                      imdb_url=imdb_url)
+
+
+        db.session.add(movie)
+
+
 
     db.session.commit()
 
+
 def load_ratings():
     """Load ratings from u.data into database."""
-    
+
+    print "Ratings"
+
     for i, row in enumerate(open("seed_data/u.data")):
         row = row.rstrip()
 
@@ -66,20 +72,24 @@ def load_ratings():
         movie_id = int(movie_id)
         score = int(score)
 
+
+
         rating = Rating(user_id=user_id,
                         movie_id=movie_id,
                         score=score)
 
+
         db.session.add(rating)
 
-        if i % 1000 == 0:
-            print i
+        db.session.commit()
 
-            db.session.commit()
-   
+
+    db.session.commit()
+
 
 if __name__ == "__main__":
     connect_to_db(app)
+    db.create_all()
 
     load_users()
     load_movies()
@@ -90,7 +100,7 @@ if __name__ == "__main__":
     db.session.commit()
 
     # Toy Story
-    r = Rating(user_id=eye.user_id, movie_id=1, score=6)
+    r = Rating(user_id=eye.user_id, movie_id=1, score=1)
     db.session.add(r)
 
     # Robocop 3
@@ -98,7 +108,7 @@ if __name__ == "__main__":
     db.session.add(r)
 
     # Judge Dredd
-    r = Rating(user_id=eye.user_id, movie_id=373, score=2)
+    r = Rating(user_id=eye.user_id, movie_id=373, score=5)
     db.session.add(r)
 
     # 3 Ninjas
@@ -106,45 +116,45 @@ if __name__ == "__main__":
     db.session.add(r)
 
     # Aladdin
-    r = Rating(user_id=eye.user_id, movie_id=95, score=4)
+    r = Rating(user_id=eye.user_id, movie_id=95, score=1)
     db.session.add(r)
 
     # The Lion King
-    r = Rating(user_id=eye.user_id, movie_id=71, score=6)
+    r = Rating(user_id=eye.user_id, movie_id=71, score=1)
     db.session.add(r)
 
     db.session.commit()
-
-
-    moshe = User(email="moshe@gmail.com",
-                   password="ari",
+    
+    # Add our user
+    moshe = User(email="moseh@gmail.com",
+                   password="ocean",
                    age=42,
                    zipcode="94109")
-    db.session.add(jessica)
+    db.session.add(moshe)
     db.session.commit()
 
     # Toy Story
-    r = Rating(user_id=moshe.user_id, movie_id=1, score=5)
+    r = Rating(user_id=jessica.user_id, movie_id=1, score=5)
     db.session.add(r)
 
     # Robocop 3
-    r = Rating(user_id=moshe.user_id, movie_id=1274, score=1)
+    r = Rating(user_id=jessica.user_id, movie_id=1274, score=1)
     db.session.add(r)
 
     # Judge Dredd
-    r = Rating(user_id=moshe.user_id, movie_id=373, score=1)
+    r = Rating(user_id=jessica.user_id, movie_id=373, score=1)
     db.session.add(r)
 
     # 3 Ninjas
-    r = Rating(user_id=moshe.user_id, movie_id=314, score=1)
+    r = Rating(user_id=jessica.user_id, movie_id=314, score=1)
     db.session.add(r)
 
     # Aladdin
-    r = Rating(user_id=moshe.user_id, movie_id=95, score=5)
+    r = Rating(user_id=jessica.user_id, movie_id=95, score=5)
     db.session.add(r)
 
     # The Lion King
-    r = Rating(user_id=moshe.user_id, movie_id=71, score=5)
+    r = Rating(user_id=jessica.user_id, movie_id=71, score=5)
     db.session.add(r)
 
     db.session.commit()

@@ -51,7 +51,7 @@ def register_process():
 def login_form():
     """Show login form."""
 
-    return render_template("login_form.html")
+    return render_template("loginpage.html")
 
 
 @app.route('/login', methods=['POST'])
@@ -99,7 +99,7 @@ def user_detail(user_id):
     """Show info about user."""
 
     user = User.query.get(user_id)
-    return render_template("user.html", user=user)
+    return render_template("user_details.html", user=user)
 
 
 @app.route("/movies")

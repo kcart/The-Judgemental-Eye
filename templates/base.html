@@ -1,18 +1,75 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <title>Ratings</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>The Judgmental Eye</title>
+
+    <!-- Bootstrap -->
+    <link href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.4/cyborg/bootstrap.min.css"
+          rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Sue+Ellen+Francisco' rel='stylesheet'>
+    
 </head>
-
 <body>
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed"
+                    data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">
+                The Judgmental Eye
+            </a>
+        </div>
 
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <p>{{ messages[0] }}</p>
-      {% endif %}
-    {% endwith %}
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse"
+             id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="/users">View All Users</a></li>
+                <li><a href="/movies">View All Movies</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              {% if "user_id" in session %}
+                  <li><a href="/users/{{ session['user_id'] }}">Profile</a></li>
+                  <li><a href="/logout">Logout</a></li>
+              {% else %}
+                  <li><a href="/register">Register</a></li>
+                  <li><a href="/login">Login</a></li>
+              {% endif %}
 
-  {% block content %} put your content here {% endblock %}
+            </ul>
+        </div>
+
+    </div>
+
+</nav>
+
+<div class="container">
+{% for flash in get_flashed_messages() %}
+  <div class="alert alert-info">{{ flash }}</div>
+{% endfor %}
+</div>
+
+{% block fullpage %}
+<div class="container">
+  {% block content %}
+      Put your body here.
+  {% endblock %}
+</div>
+{% endblock %}
+
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 
 </body>
 </html>
